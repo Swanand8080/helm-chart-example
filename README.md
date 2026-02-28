@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # helm-chart
 =======
 # MyProject Helm Chart
