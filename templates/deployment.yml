@@ -14,6 +14,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ .Release.Name }}
     spec:
+      {{- if .Values.nodeAffinity.enabled }}
       affinity:
         nodeAffinity:
 {{ toYaml .Values.nodeAffinity.config | indent 10 }}
