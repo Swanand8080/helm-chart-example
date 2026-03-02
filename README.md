@@ -1,5 +1,3 @@
-# helm-chart
-=======
 # MyProject Helm Chart
 
 Deploys a Kubernetes Deployment, Service, and HPA. No default `values.yaml`—provide values via `--set` or external YAML.
