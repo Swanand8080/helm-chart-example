@@ -57,7 +57,10 @@ livenessProbe:
   enabled: true
   path: /health
   initialDelaySeconds: 60
-
+readinessProbe:
+  enabled: true
+  path: /ready
+  initialDelaySeconds: 10
 nodeAffinity:
   enabled: true
   config:
