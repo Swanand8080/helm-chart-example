@@ -23,6 +23,9 @@ Deploys a Kubernetes Deployment, Service, and HPA. No default `values.yaml`—pr
 | `readinessProbe.enabled` | Enable readiness probe | `false` | `true` |
 | `readinessProbe.path` | Ready check path | `/ready` | `/actuator/ready` |
 | `readinessProbe.initialDelaySeconds` | Initial delay | `5` | `10` |
+| `nodeAffinity.enabled` | Enable node affinity on the pod | `false` | `true` |
+| `nodeAffinity.config`  | Raw Kubernetes `nodeAffinity` spec rendered under `spec.template.spec.affinity.nodeAffinity` | - | See example below |
+
 
 ## Installation
 
@@ -56,4 +59,14 @@ livenessProbe:
   enabled: true
   path: /health
   initialDelaySeconds: 60
->>>>>>> 6eab3c8 (Adding the Helm chart files)
+
+nodeAffinity:
+  enabled: true
+  config:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: disktype
+              operator: In
+              values:
+                - ssd
