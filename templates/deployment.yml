@@ -18,6 +18,7 @@ spec:
       affinity:
         nodeAffinity:
 {{ toYaml .Values.nodeAffinity.config | indent 10 }}
+      {{- end }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
