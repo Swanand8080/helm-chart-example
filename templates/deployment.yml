@@ -24,10 +24,10 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
         ports:
         - name: Application Port
-            containerPort: {{ .Values.service.port | default 80 }}
+          containerPort: {{ .Values.targetPort.port | default 80 }}
         {{- if .Values.device.enabled }}
         - name: device
-            containerPort: {{ .Values.device.port }}
+          containerPort: {{ .Values.device.port }}
         {{- end }}
         env:
             - name: TZ
