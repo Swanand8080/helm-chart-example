@@ -23,7 +23,13 @@ Deploys a Kubernetes Deployment, Service, and HPA. No default `values.yaml`—pr
 | `readinessProbe.initialDelaySeconds` | Initial delay | `5` | `10` |
 | `nodeAffinity.enabled` | Enable node affinity on the pod | `false` | `true` |
 | `nodeAffinity.config`  | Raw Kubernetes `nodeAffinity` spec rendered under `spec.template.spec.affinity.nodeAffinity` | - | See example below |
-
+| `ingress.enabled` | Enable or disable the Ingress resource | `false` | `true` |
+| `ingress.ingressClassName` | Specifies the Ingress controller to be used | `nginx` | - |
+| `ingress.host` | The DNS hostname for the application | - | `api.example.com` |
+| `ingress.tlsSecretName` | The K8s secret containing SSL certificates | - | `my-tls-cert` |
+| `ingress.annotations` | Raw dictionary of annotations for the Ingress controller | {} | See example below |
+| `service.port` | The port on the service that the Ingress points to | `80` | `8080` |
+| `readinessProbe.initialDelaySeconds` | Initial delay | `5` | `10` | 
 
 ## Installation
 
