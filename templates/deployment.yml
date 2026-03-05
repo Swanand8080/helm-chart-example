@@ -23,7 +23,18 @@ spec:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
         ports:
-        - containerPort: {{ .Values.service.port | default 80 }}
+        - name: Application Port
+            containerPort: {{ .Values.service.port | default 80 }}
+        {{- if .Values.device.enabled }}
+        - name: device
+            containerPort: {{ .Values.device.port }}
+        {{- end }}
+        env:
+            - name: TZ
+              value: {{ .Values.timezone | default "Asia/Kolkata" | quote }}
+            {{- if .Values.extraEnv }}
+            {{- toYaml .Values.extraEnv | nindent 12 }}
+            {{- end }}
         {{- if .Values.livenessProbe.enabled }}
         livenessProbe:
           httpGet:
