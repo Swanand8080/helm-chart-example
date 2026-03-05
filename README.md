@@ -12,6 +12,8 @@ Deploys a Kubernetes Deployment, Service, and HPA. No default `values.yaml`—pr
 | `service.type` | Service type | `ClusterIP` | `LoadBalancer` |
 | `service.port` | Service port | `80` | `8080` |
 | `service.targetPort` | Target pod port | `80` | `3000` |
+| `device.port` | Device port | `80` | `3000` |
+| `timezone` | Time Zone Environment | `Asia/Kolkata` | `Asia/Kolkata` |
 | `hpa.minReplicas` | HPA minimum replicas | `1` | `2` |
 | `hpa.maxReplicas` | HPA maximum replicas | `10` | `20` |
 | `hpa.targetCPUUtilizationPercentage` | CPU target % | `50` | `70` |
