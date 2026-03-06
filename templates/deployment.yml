@@ -23,7 +23,7 @@ spec:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
         ports:
-        - name: Application Port
+        - name: appport
           containerPort: {{ .Values.service.targetPort | default 80 }}
         {{- with .Values.device }}
           {{- if .enabled }}
