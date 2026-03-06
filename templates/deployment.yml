@@ -25,9 +25,11 @@ spec:
         ports:
         - name: Application Port
           containerPort: {{ .Values.service.targetPort | default 80 }}
-        {{- if .Values.device.enabled }}
+        {{- with .Values.device }}
+          {{- if .enabled }}
         - name: device
-          containerPort: {{ .Values.device.port }}
+          containerPort: {{ .port }}
+          {{- end }}
         {{- end }}
         env:
             - name: TZ
