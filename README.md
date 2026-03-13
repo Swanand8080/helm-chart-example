@@ -2,37 +2,83 @@
 
 Deploys a Kubernetes Deployment, Service, and HPA. No default `values.yaml`—provide values via `--set` or external YAML.
 
-## Chart Values
+# Helm Chart Parameters
+
+## General
 
 | Parameter | Description | Default | Example |
 |-----------|-------------|---------|---------|
-| `replicaCount` | Desired replicas | `1` | `2` |
+| `timezone` | Timezone for all pods | `Asia/Kolkata` | `UTC` |
+| `extraEnv` | Extra environment variables injected into pods | `[]` | See below |
+
+## Image
+
+| Parameter | Description | Default | Example |
+|-----------|-------------|---------|---------|
 | `image.repository` | Container image repository | - | `nginx` |
 | `image.tag` | Image tag | `latest` | `1.21` |
-| `service.type` | Service type | `ClusterIP` | `LoadBalancer` |
-| `service.port` | Service port | `80` | `8080` |
-| `service.targetPort` | Target pod port | `80` | `3000` |
-| `device.port` | Device port | `80` | `3000` |
-| `timezone` | Time Zone Environment | `Asia/Kolkata` | `Asia/Kolkata` |
-| `hpa.minReplicas` | HPA minimum replicas | `1` | `2` |
-| `hpa.maxReplicas` | HPA maximum replicas | `10` | `20` |
-| `hpa.targetCPUUtilizationPercentage` | CPU target % | `50` | `70` |
-| `livenessProbe.enabled` | Enable liveness probe | `false` | `true` |
-| `livenessProbe.path` | Health check path | `/health` | `/actuator/health` |
-| `livenessProbe.initialDelaySeconds` | Initial delay | `30` | `60` |
-| `readinessProbe.enabled` | Enable readiness probe | `false` | `true` |
-| `readinessProbe.path` | Ready check path | `/ready` | `/actuator/ready` |
-| `readinessProbe.initialDelaySeconds` | Initial delay | `5` | `10` |
-| `nodeAffinity.enabled` | Enable node affinity on the pod | `false` | `true` |
-| `nodeAffinity.config`  | Raw Kubernetes `nodeAffinity` spec rendered under `spec.template.spec.affinity.nodeAffinity` | - | See example below |
-| `ingress.enabled` | Enable or disable the Ingress resource | `false` | `true` |
-| `ingress.ingressClassName` | Specifies the Ingress controller to be used | `nginx` | - |
-| `ingress.host` | The DNS hostname for the application | - | `api.example.com` |
-| `ingress.tlsSecretName` | The K8s secret containing SSL certificates | - | `my-tls-cert` |
-| `ingress.annotations` | Raw dictionary of annotations for the Ingress controller | {} | See example below |
-| `service.port` | The port on the service that the Ingress points to | `80` | `8080` |
-| `readinessProbe.initialDelaySeconds` | Initial delay | `5` | `10` | 
 
+## Deployment
+
+| Parameter | Description | Default | Example |
+|-----------|-------------|---------|---------|
+| `replicaCount` | Number of desired pod replicas | `1` | `3` |
+| `nodeAffinity.enabled` | Enable node affinity rules | `false` | `true` |
+| `nodeAffinity.config` | Node affinity configuration block | - | See below |
+| `livenessProbe.enabled` | Enable liveness probe | `false` | `true` |
+| `livenessProbe.path` | HTTP path for liveness probe | `/health` | `/ping` |
+| `livenessProbe.port` | Port for liveness probe | `service.port` | `8080` |
+| `livenessProbe.initialDelaySeconds` | Delay before first liveness probe | `30` | `60` |
+| `readinessProbe.enabled` | Enable readiness probe | `false` | `true` |
+| `readinessProbe.path` | HTTP path for readiness probe | `/ready` | `/healthz` |
+| `readinessProbe.port` | Port for readiness probe | `service.port` | `8080` |
+| `readinessProbe.initialDelaySeconds` | Delay before first readiness probe | `5` | `10` |
+
+## Service
+
+| Parameter | Description | Default | Example |
+|-----------|-------------|---------|---------|
+| `service.type` | Kubernetes service type | `ClusterIP` | `LoadBalancer` |
+| `service.port` | Port exposed by the service | `80` | `8080` |
+| `service.targetPort` | Port on the pod to forward traffic to | `80` | `3000` |
+
+## Device
+
+| Parameter | Description | Default | Example |
+|-----------|-------------|---------|---------|
+| `device.enabled` | Enable device port on the container | `false` | `true` |
+| `device.port` | Device container port | `80` | `3000` |
+
+## HPA (Horizontal Pod Autoscaler)
+
+| Parameter | Description | Default | Example |
+|-----------|-------------|---------|---------|
+| `hpa.minReplicas` | Minimum number of replicas | `1` | `2` |
+| `hpa.maxReplicas` | Maximum number of replicas | `10` | `20` |
+| `hpa.targetCPUUtilizationPercentage` | Target CPU utilization to trigger scaling | `50` | `70` |
+
+## Ingress
+
+| Parameter | Description | Default | Example |
+|-----------|-------------|---------|---------|
+| `ingress.enabled` | Enable ingress resource | `false` | `true` |
+| `ingress.ingressClassName` | Ingress class name | `nginx` | `alb` |
+| `ingress.host` | Hostname for the ingress rule | - | `app.example.com` |
+| `ingress.tlsSecretName` | Name of the TLS secret | - | `app-tls-secret` |
+| `ingress.annotations` | Annotations to add to the ingress | `{}` | See below |
+
+## CronJob
+
+| Parameter | Description | Default | Example |
+|-----------|-------------|---------|---------|
+| `cronJob.enabled` | Enable the CronJob resource | `false` | `true` |
+| `cronJob.schedule` | Cron schedule expression | `*/2 * * * *` | `0 2 * * *` |
+| `cronJob.suspend` | Suspend the CronJob without deleting it | `false` | `true` |
+| `cronJob.concurrencyPolicy` | How to handle concurrent job runs | `Forbid` | `Allow` |
+| `cronJob.successfulJobsHistoryLimit` | Number of successful jobs to retain | `3` | `5` |
+| `cronJob.failedJobsHistoryLimit` | Number of failed jobs to retain | `3` | `5` |
+| `cronJob.backoffLimit` | Number of retries before marking job as failed | `2` | `1` |
+| `cronJob.restartPolicy` | Pod restart policy | `OnFailure` | `Never` |
 ## Installation
 
 ### Using `--set` (inline)
