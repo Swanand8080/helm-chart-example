@@ -61,7 +61,7 @@ Deploys a Kubernetes Deployment, Service, and HPA. No default `values.yaml`—pr
 | `ingress.annotations` | Annotations to add to the ingress | `{}` | See below |
 
 ## CronJob
-
+ 
 | Parameter | Description | Default | Example |
 |-----------|-------------|---------|---------|
 | `cronJob.enabled` | Enable the CronJob resource | `false` | `true` |
@@ -72,6 +72,10 @@ Deploys a Kubernetes Deployment, Service, and HPA. No default `values.yaml`—pr
 | `cronJob.failedJobsHistoryLimit` | Number of failed jobs to retain | `3` | `5` |
 | `cronJob.backoffLimit` | Number of retries before marking job as failed | `2` | `1` |
 | `cronJob.restartPolicy` | Pod restart policy | `OnFailure` | `Never` |
+| `cronJob.image.repository` | CronJob specific image repository. If not set, falls back to `image.repository` | `""` | `my-company/billing-job` |
+| `cronJob.image.tag` | CronJob specific image tag. If not set, falls back to `image.tag` | `""` | `v1.4` |
+| `cronJob.command` | Command to run inside the container. Overrides the image ENTRYPOINT | `[]` | `["node", "billing.js"]` |
+| `cronJob.args` | Arguments passed to the command. Overrides the image CMD | `[]` | `["--env", "production"]` |
 ## Installation
 
 ### Using `--set` (inline)
