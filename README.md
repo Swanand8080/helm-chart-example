@@ -42,13 +42,6 @@ Deploys a Kubernetes Deployment, Service, and HPA. No default `values.yaml`—pr
 | `service.port` | Port exposed by the service | `80` | `8080` |
 | `service.targetPort` | Port on the pod to forward traffic to | `80` | `3000` |
 
-## Device
-
-| Parameter | Description | Default | Example |
-|-----------|-------------|---------|---------|
-| `device.enabled` | Enable device port on the container | `false` | `true` |
-| `device.port` | Device container port | `80` | `3000` |
-
 ## HPA (Horizontal Pod Autoscaler)
 
 | Parameter | Description | Default | Example |
