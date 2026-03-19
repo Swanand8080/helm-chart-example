@@ -18,7 +18,7 @@ spec:
       template:
         metadata:
           labels:
-            app.kubernetes.io/name: {{ .Release.Name }}
+            app.kubernetes.io/name: {{ printf "%s-cronjob" .Release.Name }}
         spec:
           restartPolicy: {{ .Values.cronJob.restartPolicy | default "OnFailure" }}
           containers:
