@@ -2,11 +2,11 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ printf "%s-cronjob" .Release.Name }}
   labels:
     app.kubernetes.io/name: {{ .Release.Name }}
 spec:
-  schedule: {{ .Values.cronJob.schedule | default "*/2 * * * *" | quote }}
+  schedule: {{ .Values.cronJob.schedule | quote }}
   suspend: {{ .Values.cronJob.suspend | default false }}
   concurrencyPolicy: {{ .Values.cronJob.concurrencyPolicy | default "Forbid" }}
   successfulJobsHistoryLimit: {{ .Values.cronJob.successfulJobsHistoryLimit | default 3 }}
