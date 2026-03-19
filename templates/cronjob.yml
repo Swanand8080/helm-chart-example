@@ -4,7 +4,7 @@ kind: CronJob
 metadata:
   name: {{ printf "%s-cronjob" .Release.Name }}
   labels:
-    app.kubernetes.io/name: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ printf "%s-cronjob" .Release.Name }}
 spec:
   schedule: {{ .Values.cronJob.schedule | quote }}
   timeZone: {{ .Values.cronJob.timeZone | default "Asia/Kolkata" | quote }}
