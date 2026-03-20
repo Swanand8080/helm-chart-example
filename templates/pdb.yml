@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/name: {{ .Release.Name }}
 spec:
-  minAvailable: {{ .Values.podDisruptionBudget.minAvailable | default "50%" }}
+  minAvailable: "50%"
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ .Release.Name }}
