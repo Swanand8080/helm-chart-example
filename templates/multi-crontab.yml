@@ -1,13 +1,13 @@
-{{- if .Values.cronJob.enabled -}}
-{{- range $i, $job := .Values.cronJob.jobs }}
+{{- if (default dict .Values.cronJob).enabled }}
+{{- range $i, $job := (default list .Values.cronJob.jobs) }}
 {{- if $job.enabled }}
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ printf "%s-cronjob-%d" $.Release.Name $i }}
+  name: {{ printf "%s-%s" $.Release.Name $job.name }}
   labels:
-    app.kubernetes.io/name: {{ printf "%s-cronjob-%d" $.Release.Name $i }}
+    app.kubernetes.io/name: {{ printf "%s-%s" $.Release.Name $job.name }}
 spec:
   schedule: {{ $job.schedule | quote }}
   timeZone: {{ $job.timeZone | default "Asia/Kolkata" | quote }}
@@ -21,7 +21,7 @@ spec:
       template:
         metadata:
           labels:
-            app.kubernetes.io/name: {{ printf "%s-cronjob-%d" $.Release.Name $i }}
+            app.kubernetes.io/name: {{ printf "%s-%s" $.Release.Name $job.name }}
         spec:
           restartPolicy: {{ $job.restartPolicy | default "OnFailure" }}
           containers:
