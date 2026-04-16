@@ -1,0 +1,46 @@
+{{- if .Values.cronJob.enabled -}}
+{{- range $i, $job := .Values.cronJob.jobs }}
+{{- if $job.enabled }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ printf "%s-cronjob-%d" $.Release.Name $i }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-cronjob-%d" $.Release.Name $i }}
+spec:
+  schedule: {{ $job.schedule | quote }}
+  timeZone: {{ $job.timeZone | default "Asia/Kolkata" | quote }}
+  suspend: {{ $job.suspend | default false }}
+  concurrencyPolicy: {{ $job.concurrencyPolicy | default "Forbid" }}
+  successfulJobsHistoryLimit: {{ $job.successfulJobsHistoryLimit | default 3 }}
+  failedJobsHistoryLimit: {{ $job.failedJobsHistoryLimit | default 3 }}
+  jobTemplate:
+    spec:
+      backoffLimit: {{ $job.backoffLimit | default 2 }}
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: {{ printf "%s-cronjob-%d" $.Release.Name $i }}
+        spec:
+          restartPolicy: {{ $job.restartPolicy | default "OnFailure" }}
+          containers:
+          - name: {{ $.Chart.Name }}
+            image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+            {{- if $job.command }}
+            command:
+              {{- toYaml $job.command | nindent 14 }}
+            {{- end }}
+            {{- if $job.args }}
+            args:
+              {{- toYaml $job.args | nindent 14 }}
+            {{- end }}
+            env:
+              - name: TZ
+                value: {{ $.Values.timezone | default "Asia/Kolkata" | quote }}
+              {{- if $.Values.extraEnv }}
+              {{- toYaml $.Values.extraEnv | nindent 14 }}
+              {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
